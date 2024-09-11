@@ -1,0 +1,22 @@
+name: Vulnerable Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Unsafe step: Executes commands from user-controlled input (e.g., the PR's title)
+    - name: Run untrusted code
+      run: ${{ github.event.pull_request.title }}
+
+    # Displaying secrets without restriction (vulnerable)
+    - name: Print secrets (unsafe)
+      run: echo "The secret is: ${{ secrets.MY_SECRET }}"
